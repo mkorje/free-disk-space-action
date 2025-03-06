@@ -1,0 +1,38 @@
+name: free-disk-space-action
+description: A configurable action to free disk space on Ubuntu runners.
+author: mkorje
+
+branding:
+  icon: trash
+  color: purple
+
+inputs:
+  command:
+    description: |
+      The command to use when deleting files.
+      Must be one of rmz, rsync, find, or rm.
+    required: false
+    default: rmz
+  haskell:
+    description: Remove Haskell.
+    required: false
+    default: true
+  android-sdk:
+    description: Remove Android SDK.
+    required: false
+    default: false
+  tool-cache:
+    description: Remove tool cache.
+    required: false
+    default: true
+
+runs:
+  using: composite
+  steps:
+    - run: ${{ github.action_path }}/free_disk_space.sh
+      shell: bash
+      env:
+        INPUT_COMMAND: ${{ inputs.command }}
+        INPUT_HASKELL: ${{ inputs.haskell }}
+        INPUT_ANDROID_SDK: ${{ inputs.android-sdk }}
+        INPUT_TOOL_CACHE: ${{ inputs.tool-cache }}
